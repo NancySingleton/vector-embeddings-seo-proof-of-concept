@@ -1,0 +1,9 @@
+POST https://api.openai.com/v1/embeddings
+Authorization: Bearer <YOUR_TOKEN>
+Content-Type: application/json
+
+{
+    "model": "text-embedding-3-small",
+    "input": <YOUR_TEXT>,
+    "encoding_format": "float"
+}
