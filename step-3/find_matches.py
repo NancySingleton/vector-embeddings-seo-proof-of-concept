@@ -21,7 +21,7 @@ def get_vector(embedding):
 
 def get_index():
     vector_length = 1536
-    return annoy.AnnoyIndex(vector_length, 'euclidean')
+    return annoy.AnnoyIndex(vector_length, 'dot')
 
 
 def get_pages_index(page_embeddings):
