@@ -1,0 +1,3 @@
+- Populate the `keywords_input` CSV with your keyword data.
+- Run the `embed_keywords.py` script.
+- The embeddings will be written to the `embedded_keywords.csv` file.
