@@ -38,15 +38,23 @@ def get_pages_index():
     return build_embeddings_index(page_embeddings)
 
 
-def get_match_for_embedding(embedding, potential_matches):
+def get_keywords_index():
+    return build_embeddings_index(keyword_embeddings)
+
+
+def get_match_for_embedding(embedding, index, potential_matches):
     name = embedding[0]
-    match_index = page_index.get_nns_by_vector(get_vector(embedding), 1)[0]
+    match_index = index.get_nns_by_vector(get_vector(embedding), 1)[0]
     match_name = potential_matches[match_index][0]
     return [name, match_name]
 
 
 def get_match_for_keyword(keyword_embedding):
-    return get_match_for_embedding(keyword_embedding, page_embeddings)
+    return get_match_for_embedding(keyword_embedding, page_index, page_embeddings)
+
+
+def get_match_for_page(page_embedding):
+    return get_match_for_embedding(page_embedding, keyword_index, keyword_embeddings)
 
 
 def write_csv(filename, matches):
@@ -60,8 +68,18 @@ def write_keyword_matches_csv(matches):
     write_csv('step-3/best_page_match_by_keyword.csv', matches)
 
 
+def write_page_matches_csv(matches):
+    write_csv('step-3/best_keyword_match_by_page.csv', matches)
+
+
 page_embeddings = get_page_embeddings()
 page_index = get_pages_index()
 
-keyword_matches = [get_match_for_keyword(keyword_embedding) for keyword_embedding in get_keyword_embeddings()]
+keyword_embeddings = get_keyword_embeddings()
+keyword_index = get_keywords_index()
+
+keyword_matches = [get_match_for_keyword(keyword_embedding) for keyword_embedding in keyword_embeddings]
 write_keyword_matches_csv(keyword_matches)
+
+keyword_matches = [get_match_for_page(page_embedding) for page_embedding in page_embeddings]
+write_page_matches_csv(keyword_matches)
