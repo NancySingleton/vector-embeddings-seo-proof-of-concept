@@ -10,11 +10,11 @@ def read_embeddings_file(filename):
 
 
 def get_page_embeddings():
-    return read_embeddings_file('step-3/step_1_output.csv')
+    return read_embeddings_file('step_1_output.csv')
 
 
 def get_keyword_embeddings():
-    return read_embeddings_file('step-3/step_2_output.csv')
+    return read_embeddings_file('step_2_output.csv')
 
 
 def get_vector(embedding):
@@ -65,11 +65,11 @@ def write_csv(filename, matches):
 
 
 def write_keyword_matches_csv(matches):
-    write_csv('step-3/best_page_match_by_keyword.csv', matches)
+    write_csv('best_page_match_by_keyword.csv', matches)
 
 
 def write_page_matches_csv(matches):
-    write_csv('step-3/best_keyword_match_by_page.csv', matches)
+    write_csv('best_keyword_match_by_page.csv', matches)
 
 
 page_embeddings = get_page_embeddings()

@@ -5,7 +5,7 @@ OPENAI_API_KEY = "<YOUR_API_KEY>"
 
 
 def get_keywords():
-    with open('step-2/keywords_input.csv') as keywords_file:
+    with open('keywords_input.csv') as keywords_file:
         reader = csv.reader(keywords_file)
         return [row[0] for row in reader]
 
@@ -23,7 +23,7 @@ def embed_keyword(keyword):
 
 
 def write_embedded_keywords_csv(keywords):
-    with open('step-2/embedded_keywords.csv', 'w') as output_file:
+    with open('embedded_keywords.csv', 'w') as output_file:
         writer = csv.writer(output_file, delimiter='|', quoting=csv.QUOTE_NONE)
         for x in keywords:
             writer.writerow(x)
