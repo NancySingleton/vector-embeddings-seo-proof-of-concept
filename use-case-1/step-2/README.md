@@ -1,4 +1,4 @@
 - Populate the `keywords_input` CSV with your keyword data.
 - Run the `embed_keywords.py` script.
-  - Run `python3 -m poc.step-2.embed_keywords` from the top level of the project.
+  - Run `python3 -m use-case-1.step-2.embed_keywords` from the top level of the project.
 - The embeddings will be written to the `embedded_keywords.csv` file.

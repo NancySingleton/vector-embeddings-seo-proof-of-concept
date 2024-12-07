@@ -1,10 +1,11 @@
 from utils.csv_helper import read, write
 from utils.matching_helper import get_best_match
 
-PAGE_EMBEDDINGS_FILE = 'poc/step-3/step_1_output.csv'
-KEYWORDS_EMBEDDINGS_FILE = 'poc/step-3/step_2_output.csv'
-PAGE_MATCH_BY_KEYWORD_FILE = 'poc/step-3/best_page_match_by_keyword.csv'
-KEYWORD_MATCH_BY_PAGE_FILE = 'poc/step-3/best_keyword_match_by_page.csv'
+PREFIX = 'use-case-1/step-3/'
+PAGE_EMBEDDINGS_FILE = PREFIX + 'step_1_output.csv'
+KEYWORDS_EMBEDDINGS_FILE = PREFIX + 'step_2_output.csv'
+PAGE_MATCH_BY_KEYWORD_FILE = PREFIX + 'best_page_match_by_keyword.csv'
+KEYWORD_MATCH_BY_PAGE_FILE = PREFIX + 'best_keyword_match_by_page.csv'
 
 page_embeddings = read(PAGE_EMBEDDINGS_FILE)
 keyword_embeddings = read(KEYWORDS_EMBEDDINGS_FILE)
