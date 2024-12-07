@@ -1,3 +1,4 @@
 - Populate the `step_1_output.csv` and `step_2_output.csv` files with your data from steps 1 and 2.
 - Run the `find_matches.py` script.
+    - Run `python3 -m poc.step-3.find_matches` from the top level of the project.
 - The matches will be written to the `best_keyword_match_by_page.csv` and `best_page_match_by_keyword.csv` files.

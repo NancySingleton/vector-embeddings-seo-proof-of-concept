@@ -1,85 +1,16 @@
-import ast
-import csv
-import annoy
+from utils.csv_helper import read, write
+from utils.matching_helper import get_best_match
 
+PAGE_EMBEDDINGS_FILE = 'poc/step-3/step_1_output.csv'
+KEYWORDS_EMBEDDINGS_FILE = 'poc/step-3/step_2_output.csv'
+PAGE_MATCH_BY_KEYWORD_FILE = 'poc/step-3/best_page_match_by_keyword.csv'
+KEYWORD_MATCH_BY_PAGE_FILE = 'poc/step-3/best_keyword_match_by_page.csv'
 
-def read_embeddings_file(filename):
-    with open(filename) as page_embeddings_file:
-        reader = csv.reader(page_embeddings_file, delimiter='|')
-        return [row for row in reader]
+page_embeddings = read(PAGE_EMBEDDINGS_FILE)
+keyword_embeddings = read(KEYWORDS_EMBEDDINGS_FILE)
 
+page_matches_by_keyword = [get_best_match(keyword_embedding, page_embeddings) for keyword_embedding in keyword_embeddings]
+write(PAGE_MATCH_BY_KEYWORD_FILE, page_matches_by_keyword)
 
-def get_page_embeddings():
-    return read_embeddings_file('step_1_output.csv')
-
-
-def get_keyword_embeddings():
-    return read_embeddings_file('step_2_output.csv')
-
-
-def get_vector(embedding):
-    return ast.literal_eval(embedding[1])
-
-
-def get_new_index():
-    vector_length = 1536
-    return annoy.AnnoyIndex(vector_length, 'dot')
-
-
-def build_embeddings_index(embeddings):
-    index = get_new_index()
-    for idx, embedding in enumerate(embeddings):
-        index.add_item(idx, get_vector(embedding))
-    index.build(10)
-    return index
-
-
-def get_pages_index():
-    return build_embeddings_index(page_embeddings)
-
-
-def get_keywords_index():
-    return build_embeddings_index(keyword_embeddings)
-
-
-def get_match_for_embedding(embedding, index, potential_matches):
-    name = embedding[0]
-    match_index = index.get_nns_by_vector(get_vector(embedding), 1)[0]
-    match_name = potential_matches[match_index][0]
-    return [name, match_name]
-
-
-def get_match_for_keyword(keyword_embedding):
-    return get_match_for_embedding(keyword_embedding, page_index, page_embeddings)
-
-
-def get_match_for_page(page_embedding):
-    return get_match_for_embedding(page_embedding, keyword_index, keyword_embeddings)
-
-
-def write_csv(filename, matches):
-    with open(filename, 'w') as output_file:
-        writer = csv.writer(output_file, delimiter='|', quoting=csv.QUOTE_NONE)
-        for x in matches:
-            writer.writerow(x)
-
-
-def write_keyword_matches_csv(matches):
-    write_csv('best_page_match_by_keyword.csv', matches)
-
-
-def write_page_matches_csv(matches):
-    write_csv('best_keyword_match_by_page.csv', matches)
-
-
-page_embeddings = get_page_embeddings()
-page_index = get_pages_index()
-
-keyword_embeddings = get_keyword_embeddings()
-keyword_index = get_keywords_index()
-
-keyword_matches = [get_match_for_keyword(keyword_embedding) for keyword_embedding in keyword_embeddings]
-write_keyword_matches_csv(keyword_matches)
-
-keyword_matches = [get_match_for_page(page_embedding) for page_embedding in page_embeddings]
-write_page_matches_csv(keyword_matches)
+keyword_matches_by_page = [get_best_match(page_embedding, keyword_embeddings) for page_embedding in page_embeddings]
+write(KEYWORD_MATCH_BY_PAGE_FILE, keyword_matches_by_page)
